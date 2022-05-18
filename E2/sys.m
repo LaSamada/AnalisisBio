@@ -1,5 +1,9 @@
-function dt = sys(~,x,p)
+function dt = sys(t,x)
 %Model states
+p=[0.755 0.039 0.314 0.519 0.272 0.89 1.116 1.482 12.22 23.08 ...
+    9.75 37.63 83.64 44.7 40.11 0.716 0.045 0.084 0 0 ...
+    0 0];
+% estos últimos parámetros son 0 porque es una sim batch
 S = x(1);
 N = x(2);
 Xf = x(3);
