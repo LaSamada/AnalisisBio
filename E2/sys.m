@@ -1,9 +1,9 @@
 function dt = sys(t,x)
 %Model states
 p=[0.755 0.039 0.314 0.519 0.272 0.89 1.116 1.482 12.22 23.08 ...
-    9.75 37.63 83.64 44.7 40.11 0.716 0.045 0.084 0 0 ...
-    0 0];
-% estos últimos parámetros son 0 porque es una sim batch
+    9.75 37.63 83.64 44.7 40.11 0.716 0.045 0.047 730 0.162 ...
+    85.15 0.021];
+
 S = x(1);
 N = x(2);
 Xf = x(3);
@@ -18,6 +18,7 @@ Yxs =p(4) ; Ylips = p(5); Ycits = p(6);
 gamma = 0.06; mumax = p(1); rhonmax =p(16) ; Q0 =p(17) ; Ks1 = p(7); kl1 =p(13) ; Kn =p(10) ; pilipmax = p(2); Ks2 = p(8) ; kl2 =p(14) ;
 alfa = 0.36; k2 =p(11) ; qncrit = p(18); picitmax = p(3); Ks3 =p(9) ; kl3 =p(15) ; k3 = p(12);
 
+%Fed - batch: 
 Sin =  p(19); fsin =p(20) ;  Nin =p(21) ; fnin=p(22) ; Fsample = 0;
 
 Fin = fsin + fnin;
