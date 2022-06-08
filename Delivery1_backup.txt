@@ -1,0 +1,374 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[USenglish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{enumerate}
+\usepackage{svg}
+\usepackage{enumitem}
+\usepackage{xcolor, colortbl}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{natbib} % Este es pa citar
+\usepackage{xfrac}
+\usepackage{cancel}
+\usepackage{chemfig}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage[version=4]{mhchem}
+\usepackage[left=2.5cm,right=2.5cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{comment}
+\usepackage{caption}
+\usepackage{tcolorbox}
+\usepackage{appendix}
+%%%%%%% settings and newcommands %%%%%%
+\newcommand{\HRule}{\rule{\linewidth}{0.7mm}} 
+\renewcommand{\bibsection}{\section{References}}
+\newcommand{\grado}{$^{\circ}$}
+\renewcommand{\r}[1]{\textcolor{red}{#1}}
+\usepackage{lipsum} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Sacar estawea 
+\usepackage{adjustbox}
+%%%%%%% Ajustes de texto %%%%%%% 
+\renewcommand{\baselinestretch}{1.1} 
+\setlength{\parindent}{1cm} 
+\renewcommand{\r}[1]{\textcolor{red}{#1}}
+\definecolor{celeste}{rgb}{0.4, 0.4, 1}
+\definecolor{verde}{rgb}{0.1,0.6, 0.2}
+\definecolor{gris}{rgb}{0.2, 0.2, 0.2}
+
+\newcolumntype{P}[1]{>{\centering\arraybackslash}m{#1}}
+\newcommand{\parentt}[1]{\left[ #1 \right]}
+\newcommand{\parent}[1]{\left( #1 \right)}
+\newcommand{\si}[1]{\;\mbox{#1}}
+\setlength\heavyrulewidth{1.5px} % Para Tabla 
+\setlength\lightrulewidth{1.25px} % Para Tabla
+
+\setlength{\parskip}{0.2cm} % Espacio entre párrafos
+\usepackage{indentfirst} % Parrafos indentados
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{fourier}
+\arrayrulecolor{gris}
+\usepackage[cal=ams, cal=cm, scr=boondox, frak=euler]{mathalpha}
+\let\amsmathcal\mathcal
+\AtBeginDocument{%
+    \let\mathcal\relax
+    \newcommand{\mathcal}[1]{\amsmathcal{#1}}
+}
+\AtBeginDocument{\renewcommand{\tablename}{Table}}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=black,      
+    urlcolor=blue,
+    pdftitle={E1 IIQ3733 G3},
+    citecolor=black
+}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, decorations.pathreplacing, positioning}
+
+\begin{document}
+
+\begin{titlepage}
+
+\center
+
+\textsc{\Large Pontifical Catholic University of Chile}\\[0.3cm] 
+\textsc{\Large Chemical and Bioprocess Engineering Department}\\[0.3cm] 
+\textsc{\Large Biosystem Analysis -- IIQ3733} \\[0.2cm]
+\includegraphics[width=0.3\textwidth]{logo_catolica.png}
+
+
+\HRule \\[0.2cm]
+{ \huge \bfseries Report 1 \\[0.1cm]
+Modelling, simulation and optimization  
+ \\[-0.25cm]
+of \textit{Yarrowia lipolytica} cultures 
+\\[0.05cm]
+in fed-batch bioreactors}
+
+\HRule \\[2cm]
+
+
+\textbf{{\LARGE Group 4 }} \\ [0.5cm]
+
+{\Large Gabriel Díaz} \\[0.1cm]
+{\Large María Francisca Lyng} \\[0.1cm]
+{\Large Sebasthian Schnettler} \\[0.1cm]
+{\Large Ronald Tighe} \\[1.4cm]
+\vfill
+{\large {\today{}}} % April
+\end{titlepage}
+
+\newpage
+\thispagestyle{empty}
+\pagenumbering{gobble}
+\renewcommand*\contentsname{Contents}
+\tableofcontents
+\newpage
+
+\setcounter{page}{1}
+\pagenumbering{arabic}
+
+%%%%%%%%%%%%%%%%%% Comienzo del documento %%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+
+Lipid production has become relevant in the food industry during the last two decades. Vegan and plant-based diets have seen a considerable rise in this time span, in the USA, the amount of people that consider themselves vegan augmented in a 500\% between 2014 and 2021 \citep{Bourassa_2021}. With this, the demand for meat-like plant based products has increased too. One of the problems when crafting vegan meat, is the lack of lipid alternatives available. For this reason, novel ways of synthesizing them have been studied, and production by \textit{Yarrowia lypolitica} is a promising alternative. 
+
+\textit{Yarrowia lypolitica} is a strictly aerobic oleaginous yeast capable of synthesizing more than 30\% of its dry cell weight as lipids \citep{Bao_2021}. This yeast has been identified as a potential candidate for the synthesis of many products, like biodiesel due to its production of high quantity of triacylglycerol (TAG) \citep{Beopoulos_2008}. Furthermore, it is the only oleaginous yest with a complete sequenced genome, making it a suitable candidate for genetic and metabolic engineering, aiming the production of large amounts of lipids \citep{Robles_2018}.
+
+Intracellular lipids in \textit{Yarrowia lypolitica} include neutral lipids, like TAGs, whose function is to reserve energy for the cell, and non-neutral lipids, like free fatty acids (FFAs) or glycolipids, that have special physiological functions \citep{Wang_2020}. About 95\% of lipids are TAGs, which are stored in lipid bodies (LP), and their metabolic pathways are generally divided in two, \textit{ex novo} lipid accumulation and \textit{de novo} lipid synthesis \citep{Bao_2021}. The first one involves the hydrolysis of hydrophobic substrates such as, alkanes, oils, fatty acids and triglycerides present in the cell medium, which are accumulated in the form of TAGs \citep{Wang_2020}. In the \textit{de novo} pathway \textit{Y. lypolitica} requires hydrophobic substrates, such as glucose or glycerol, for cell growth and lipid synthesis through the tricarboxylic acid cycle (TCA) \citep{Bao_2021}. TAG synthesis is stimulated when carbon concentration in the medium is abundant and nitrogen is low, this last situation activates a series of regulatory events involving the central metabolism, resulting in the down-regulation of the TCA. When this occurs the accumulated citrate is transformed into acetyl-CoA, the main precursor for fatty acids synthesis \citep{Wang_2020}. However, under the described conditions, lipid production reaches a limit, even if the concentration of the carbon source in the medium is high, which lead to the accumulation of citrate \citep{BELLOU_2016}. 
+
+In this project we will be in close collaboration with Dr. Agosins' laboratory. As of late, they have reported many issues regarding \textit{Yarrowia lipolytica} cell cultures. Of the many concerning matters, the following two are the most pressing and troubling:
+\begin{itemize}
+    \item The cell cultures consume an excessive amount of oxygen, which increases operational costs.
+    \item The yeast produces a substantial amount of the undesired subproduct citrate, reducing lipid yield over carbon source.
+\end{itemize}
+
+Due to the necessities of our collaborators, we emphasized the state of the art search in both of these areas: oxygen uptake optimization and citric acid production. 
+
+
+
+
+\section{State of the art}
+
+\subsection{Dynamic models}
+For the design of any solution to this problems (within the contents of the course), we need a growth model for the yeast. With this in mind, we searched for models of \textit{Y. lipolytica} growth and lipid production in the literature. 
+
+The following models are all first principles-based, deterministic, continuous, and depend only on time. Therefore, they are described by sets of ordinary differential equations (ODEs) and constitutive equations.
+
+The presented models require the following assumptions:
+\begin{itemize}
+    \item Metabolism and cell growth of the yeast are driven only by the uptake of fed extracellular nutrients: carbon and nitrogen.
+    \item The cell prioritises the production of functional biomass.
+    \item Under intracellular nitrogen deficit or limitation, the yeast accumulates lipids and storage compounds.
+    \item Under the previously mentioned conditions and carbon excess, citric acid is produced and excreted.
+    \item Oxygen is not a limiting substrate.
+    \item Biomass can be divided in two types: functional $X_f$, and lipid $X_L$
+    \item Total lipids $X_L$ are the sum of structural lipids $X_{LS}$ and accumulated lipids $X_{LA}$.
+    \item Structural lipids $X_{LS}$ can be measured as a fraction of the functional biomass $X_f$ ($X_L = X_{LS}+X_{LA}$, with $X_{LS}=\gamma X_f$).
+\end{itemize}
+
+\citet{Robles_2018} presents two different models of growth and lipid production, the Unstructured model and the Nitrogen Quota model. Both of them based on a set of ODEs derived from mass balances. 
+
+The mass balances used on both models are the following:
+
+\begin{itemize}
+\item Glucose Mass Balance
+\begin{equation}
+   \dfrac{dS}{dt} = S_{IN} \cdot \frac{f_{S_{IN}}}{V} - \left(\mu \frac{1}{Y_{X/S}} + \pi_{LIP} \frac{1}{Y_{LIP/S}} + \pi_{CIT} \frac{1}{Y_{CIT/S}} \right) \cdot X_f - \frac{S}{V}\cdot F_{IN} 
+\end{equation}
+\item Nitrogen Mass Balance
+\begin{equation}
+    \dfrac{dN}{dt} = N_{IN} \cdot \frac{f_{N_{IN}}}{V} - \rho_N X_f -  \frac{N}{V}\cdot F_{IN}
+\end{equation}
+\item Functional Biomass Mass Balance
+\begin{equation}
+    \dfrac{dX_f}{dt} =  \mu \cdot X_f -  \frac{X_f}{V}\cdot F_{IN}
+\end{equation}
+\item Lipidic Content Mass Balance
+\begin{equation}
+    \dfrac{dX_L}{dt} = \left(\pi_{LIP} + \gamma \cdot \mu \right)\cdot X_f -  \frac{X_L}{V}\cdot F_{IN}
+\end{equation}
+\item Citric Acid Mass Balance
+\begin{equation}
+    \dfrac{dCIT}{dt} = \pi_{CIT}\cdot X_f -  \frac{CIT}{V}\cdot F_{IN}
+\end{equation}
+\item Culture Volume
+\begin{equation}
+    \dfrac{dV}{dt} =  F_{IN} - F_{Sample}
+\end{equation}
+
+\end{itemize}
+
+\subsubsection{Unstructured model} 
+The unstructured model mainly assumes that external nitrogen is taken up directly for the production of biomass. Because of this, it is taken into consideration for the growth rate calculation as a limitation factor alongside carbon substrate concentration:
+
+\begin{equation}
+	 \mu  = \mu^{max} \left(\frac{S}{K_{S,1}+S+S^2/k_{l,1}} \right)\left(\frac{N}{K_N + N}\right)
+\end{equation}
+
+In the other hand, nitrogen uptake is only dependant on the growth rate:
+\begin{equation}
+    \rho_N = \mu \frac{1}{Y_{X/N}}
+\end{equation}
+
+Now, for lipid accumulation, it is considered an nitrogen inhibition factor and a citric acid competition factor:
+
+\begin{equation}
+    \pi_{LIP} = \pi^{max}_{LIP} \left(\frac{S}{K_{S,2} + S + S^2/k_{l,2}} \right) \left(\frac{k_1}{k_1 + N} \right) \left(\frac{k_2}{k_2 + CIT} \right)
+\end{equation}
+
+One of the most distinctive features of each model is the way in which the overflow metabolism activation is described. In this case (unstructured model) the switch indicator depends on the glucose uptake rate $GUR_x$ for lipids and biomass. This, due to the fact that citrate production is triggered by excess carbon and nitrogen depletion, which implies a reduction of the $GUR_x$ value until a critical point ${of}_U$:
+
+\begin{equation}
+    GUR_x = \mu \frac{1}{Y_{X/S}} + \pi_{LIP}\frac{1}{Y_{LIP/S}}
+\end{equation}
+
+\begin{equation}
+\text{Ind}_U = \begin{cases}
+0,~~~ GUR_x > Of_U\\
+1,~~~ GUR_x \leq Of_U \end{cases}
+\end{equation}
+
+Finally, the model uses this indicator to model the citrate production rate, which is also affected by citrate inhibition:
+\begin{equation}
+    \pi_{CIT} = \pi^{max}_{CIT}\cdot (\text{Ind}_U) \left(\frac{S}{K_{S,3}+S+S^2/k_{l,3}} \right) \left(\frac{k_3}{k_3 + CIT} \right)
+\end{equation}
+
+\subsubsection{Quota Model}
+
+This model is based on a previous model by \citet{droop_1968}, developed for microalgae in heterotrophic conditions. The main feature of this model is the introduction of variable yields, called quotas. 
+
+First, the nitrogen quota $q_N$ modulates growth:
+\begin{equation}
+	\dfrac{d}{dt}q_N=\rho_N-\mu q_N
+\end{equation}
+At the same time, growth rate is adjusted as:
+\begin{equation}
+	 \mu  = \mu^{max}\left(1-\dfrac{Q_o}{q_N}\right)\left(\dfrac{S}{K_{S,1}+S+S^2/k_{l,1}}\right)
+\end{equation}
+where $Q_0$ represents the minimum nitrogen quota at which microbial growth is possible. The nitrogen uptake rate is now dependant on nitrogen concentration and not on specific growth nor nitrogen/biomass yield:
+\begin{equation}
+    \rho_N=\rho_N^{max}\left(\dfrac{N}{K_N+N}\right)
+\end{equation}
+with $\rho_N^{max}$ is the maximum nitrogen uptake rate. Then, lipid accumulation rate follows the next equation:
+\begin{equation}
+    \pi_{LIP}=\pi_{LIP}^{max}\left(\dfrac{S}{K_{s,2}+S+S^2/K_{I,2}}\right)\left(1-\dfrac{X_L}{\alpha X_T}\right)\left(\dfrac{k_2}{k_2+CIT}\right)
+\end{equation}
+where term $\alpha$ represents the maximum lipid content.
+
+Now, the model proposes that there exists a critical nitrogen quota $q_N^*$, where (analogous to the $GUR_x$) the metabolism to overflow switches. With this, the citrate acid production is calculated in the same way as in the Unstructured model:
+
+\begin{equation}
+\text{Ind}_U = \begin{cases}
+0,~~~ q_N > q_N^*\\
+1,~~~ q_N \leq q_N^* \end{cases}
+\end{equation}
+
+\begin{equation}
+    \pi_{CIT}=\pi_{CIT}^{max}(\text{Ind}_Q)\left(\dfrac{S}{K_{S,3}+S+S^2/K_{I,3}}\right)\left(\dfrac{k_3}{k_3+CIT}\right)
+\end{equation}
+
+The principal difference between both models it's in the overflow indicator. 
+
+\subsubsection{Other Models}
+
+\citet{Xie_2016} developed a model for the production of Omega 3 on \textit{Yarrowia}. Being this an specific lipid and not the general TAGs that are the focus of our project, the complete model will not be displayed. Despite of this, Xie et al. achieved good fits with validation data, on batch, fedbatch, single-stage continuous and two-stage continuous cultures. The model even includes (in part) the oxygen requirements for culture growth, but not any oxygen diffusion dynamics. Nevertheless, this model is not in any way ruled out, and may be used in the future.
+
+\subsection{Oxygen uptake optimization}
+\textit{Yarrowia lipolytica} is a strictly aerobic yeast, thus dissolved oxygen concentration (DOC) is a key parameter for fermentation performance, since it affects cell growth as well as lipid accumulation \citep{Bao_2021}. Low values of DOC induce the formation of mycelia and downregulate lipid production \citep{Bellou_2014}. Studies reported in \citet{Bao_2021} state that the maximum production of lipids by \textit{Y. lipolytica} was obtained when the DOC was 30\%. A continuous supply of oxygen to the culture is important considering its low solubility in aqueous mediums \citep{Ferreira_2016}, especially for \textit{Y. lipolytica} due to the thickness of the culture.     
+
+Of the methods applied to overcome the limitations of oxygen uptake in \textit{Yarrowia lipolytica}, a strategy proposed by \citet{Peng_2020} is among the most recent ones. The authors proposed constant dissolved oxygen value feeding (DO-stat) to a fed-batch reactor, in order to reduce the metabolic overflow, enhance the production of $\beta$-carotene and improve the utilization of glucose. The strategy applied is based on an online feedback of the DOC value, which increases when the substrate is consumed entirely, therefore signaling the addition of glucose to the reactor. A simple kinetic model relating the cell growth to the glucose uptake and $\beta$-carotene production was used. The results of this research show that the DO-stat strategy improved specific cell growth rate by 4.66-fold and the $\beta$-carotene yield by 22.57-fold, suggesting that this culture strategy limits the metabolic overflow, enhancing glucose utilization. %este quizás tiene mas sentido con el tema del citrato
+
+Another approach to optimize lipid production in \textit{Yarrowia lipolytica} has been the use of genome-scale modelling and flux balance analysis (FBA). In the research paper published by \citet{Kavscek_2015}, the authors reconstructed the metabolic network of  \textit{Y. lipolytica} using a genome-scale model of \textit{Saccharomyces cerevisiae} as a scaffold. Using dynamic FBA to simulate the cell growth and lipid production, the researchers validated the model results with experimental data. Based on the predictive capacities of the model and the data available, the authors developed strategies to eliminate the citrate excretion and to improve lipid production by reducing the oxygen uptake. The former method is based on the assumption that the citrate excretion is a cell mechanism to dispose of the excess citrate, caused by an excess glucose uptake. Thus, a reduction of the glycolytic flux would diminish the citrate production, while maintaining the lipid synthesis rate. Using the validated model, the authors calculate a certain amount of glucose feed needed to maintain lipid synthesis and at the same time completely remove citrate excretion, which is lower than the uptake of a regular unrestricted culture. Using the concentration feed rate predicted by the model, a experiment was made in a fed-batch reactor which confirmed the initial hypothesis, entirely eliminating the citrate production, while maintaining the lipids production virtually unchanged. Further analysis of the metabolic model showed an indirect proportionality between the oxygen uptake and the lipid content of the biomass. Following simulations suggest that a more active lipids synthesis responds to a lower oxygen consumption. The authors propose that a reduced aeration would reduce cell growth, but increase lipid accumulation. The experimental results of this strategy showed a 67\% increase of lipid content (39\% of DW) in comparison to the culture without the oxygen restriction. Besides, the citrate production dropped from 0.63 to 0.48 g/g glucose in the oxygen restricted media.
+
+To evaluate the effects of oxygen supply on the lipids production, \citet{Pereira_2021} performed different assays using varying values of aeration and agitation rate, in order to obtain three select $k_La$ values: 22 $h^{-1}$, 87 $h^{-1}$ and 125 $h^{-1}$. The authors calculated different $k_La$ values using the gassing-out technique in blank assays, and obtained three distinct values: 22 $h^{-1}$ (at 0.5 vvm and 200 rpm), 87 $h^{-1}$ (at 1 vvm and 400 rpm) and 125 $h^{-1}$ (at 1.5 vvm and 600 rpm), and tested them on several experiments. The optimal lipids production in the study was attained at a $k_La$ value of 87 $h^{-1}$ , with an improvement of roughly 7-fold and 3-fold for the two $Y. lipolytica$ strains tested. This is explained according to findings reported by \citet{Bellou_2014}, in which lypid synthesis is upregulated in high oxygen concentration media due to the upregulation of enzymes associated with lipid production. On the other hand, higher oxygen concentration showed a negative effect on lipid synthesis. This behavior was already reported by \citet{Papanikolaou_2007}, in which higher oxygen concentrated media drived the yeast metabolism towards biomass growth without lipid accumulation. 
+
+\citet{Ferreira_2016} made some advances in understanding the impact of oxygen mass transfer on citric acid production in \textit{Y. lipolytica}, using glycerol as a carbon source. The authors developed an empirical correlation for $k_La$ with the operating conditions as variables, including the stirring speed, air inlet flow rate, cell density, etc. By changing specific air flow rate and stirring speed, and using the empirical correlation proposed, the authors obtained different $k_La$ values ranging from 7 $h^{-1}$ to 125 $h^{-1}$, and then tested these conditions on several experiments. The maximum citric acid production was attained with an intermediate $k_La$ value of 55 $h^{-1}$, which is somewhat consistent with the study reported by \citet{Pereira_2021}, discussed in the paragraph above.
+
+\subsection{Citric acid production}
+
+\textit{Yarrowia lipolytica} overflow to produce citric acid is the result of an excessive substrate supply. Therefore, the carbon uptake for lipids and functional biomass must encounter a saturation point \citep{Robles_2018}. With this in mind, various authors have attempted different methods to optimize lipid biomass accumulation and minimize citric acid production. 
+
+As mentioned before, \citet{Robles_2018} used two different models for this purpose. The authors calibrated and validated the models with experimental data, obtaining $R^2$ for the measured states of around $0.9$, making it a relatively good fit, determining that the models were capable of identifying overflow metabolism switch. In this process, the authors determined that the quota model had a better overall fit, and therefore used this model for the rest of the work. Based on this model, they designed a multi objective optimization using the Pattern Search algorithm of MATLAB, looking to maximize lipid productivity at the end of the fermentation and maximizing lipid content fraction on biomass, obtaining an ideal nutrient (carbon and nitrogen) feeding control law. With this strategy, an \textit{in silico} $0$ g/L citrate concentration was obtained.
+
+\citet{Xie_2016} developed a model for the production of Omega-3 fatty acids (or EPA for  cis-5,8,11,14,17-eicosapentanoic acid). They identified key fed-batch fermentation media composition, feeding rates and process conditions to achieve 25\% EPA in yeast biomass. With this, model simulations where used to develop multiple culture systems, like single stage and two-stage continuous process. It was concluded that the use of a two-stage continuous process, equipped with a growth fermentor as a first stage, and a production fermentor as a second stage, was superior at achieving higher production rates, titer and yields.
+
+On the other hand, \citet{wei_2021} proposed a genetically modified \textit{Y. lipolytica} in which ATP citrate lyase (ACL) and diacylglycerol acyltransferase 1 (DGA1) genes are overexpressing meanwhile knocking out sucrose non-fermenting 1 (Snf1). The ACL mediates the transformation of citrate to Acetyl-CoA which later helps to the lipids formation as DGA1 mediates the transformation of diacylglycerol acyltransferase to triacylglycerol. The knocking out of the gene Snf1 represses the energetically expensive lipid an protein biosynthesis. This strain (YL163t) that contain the three mutations show an improvement of 16\% of total \textit{in vivo} newly formed fatty acid methyl esters (FAME) compared to the strain which only have the ACL and DGA1 (Po1g ACL-DGA1).
+
+Finally, \citet{BELLOU_2016} take another approach by making a double limitation of substrates, nitrogen and magnesium. Normally only the nitrogen is limited as it is known, that it is necessary to give the yeast the conditions to accumulate lipids, but in this study it is shown that adding a limitation in magnesium improves the lipids ratio in biomass produced by an wild strain of \textit{Y. lypolitica} reaching values close to 47.5\%. The exact effect of the limitation of magnesium is not determined in this study but it is thought that this improvement is due to the fact that a limitation in magnesium enhances the activity of diacylglycerol acyltransferase.
+
+\subsection{Limitations \& opportunities}
+
+The state of the art review showed that a high C/N ratio is required to obtain a high lipid content. Based on this four major limitations were found in this research:
+\begin{itemize}
+    \item If there is a high content of carbon substrates, cell growth is inhibited as well as the lipid accumulation.
+    \item If there is an insufficient carbon source supply, emergency mechanisms of the yeast activates and all the stored lipids are mobilized to maintain cell life activities.
+    \item In the case of either an excess or the absence of a sufficient amount of nitrogen the production of non desire metabolites such as citric acid is expected.
+    \item There is a lack of dynamic models that include oxygen diffusion for the desired lipid synthesis as these models only include parameters such as carbon source, nitrogen supply among others.
+\end{itemize}
+
+As such, there is a huge opportunity for an integrated model that take into an account all the limitations named above.
+
+\section{Hypothesis \& objectives}
+
+According to the limitations and opportunities observed in the state of the art review, we propose the following hypothesis and general objectives:
+\begin{itemize}
+    \item \textbf{Hypothesis} : The optimization of a dynamic model of \textit{Yarrowia lipolytica} will enhance lipid production and resolve the main issues reported by our collaborators at the laboratory.
+    
+    \item \textbf{General Objectives} : \begin{itemize}
+        \item Maximization of lipid yield, by reducing the citrate subproduct synthesis \textit{in silico}.
+        \item Optimization of operating conditions, with emphasis on the concentration feed rate of glucose, nitrogen and oxygen.
+    \end{itemize}
+\end{itemize} 
+
+
+
+
+\section{Methodology}
+
+To accomplish the set objectives and verify the hypothesis, we propose the following steps.
+\begin{enumerate}
+    \item Development of and calibration of a unified model, that contemplates both the dissolved oxygen dynamics and the mechanics of the desired lipid synthesis. The reported models describe very well the growth of \textit{Yarrowia lipolytica} in nitrogen depletion conditions that enable lipids production, but do not account for dissolved oxygen dynamics and effects.
+    \item Simulation using the Mathworks platform MATLAB, and following validation using the experimental data available provided by our collaborators.
+    \item Model optimization using strategies such as Optimal Pathing, to find optimal operating conditions around a determined objective function, and Multiobjective Optimization, to assess both the maximization of lipid synthesis and minimization of citric acid.
+\end{enumerate}
+
+The methodology presented is still in a preliminary stage, and as such is subject to future changes, according to the needs of the project, but it still provides a solid framework to base our future work.
+
+\section{Conclusions \& future work plan}
+
+\textit{Y. lypolitica} shows great potential to become one of the major options to a plant-based alternative to lipid production. Nevertheless a lot of research is still necessary to optimize this production taking into account that key parameters as carbon and nitrogen source are not completely determined to the best lipid synthesis outcome. Furthermore, oxygen uptake is an important variable that influence directly to the lipid production that it is not taking in account in the models studied, so a model that integrated that parameter is an improvement yet to be done. Finally, even though many studies has been made and different approaches were tried by theses, all of them are still in early development and in small scale, so a lot of validation and large scale experimentation still need to be tested .
+
+Regarding the future work plan, a model integrating the oxygen diffusion to a model that already integrates the nitrogen and carbon source flow rates for a better and more realistic prediction of lipids production. Once the model is developed, it will be tested by comparing the results with the data given by our collaborators and at last, optimize the model to give the best results for lipid production of the strain of \textit{Y. lypolitica} used by them. The main activities that need to be carried out are summarized in Table \ref{Gantt chart}. 
+
+\begin{table}[H]
+\caption{Gantt chart}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Date}     & \textbf{Activity}                                                                      \\ \hline
+11-17/04 & Apply feedback from delivery 1                                                \\ \hline
+18-24/04 & Integration of oxygen diffusion, nitrogen and carbon flows rates to the model \\ \hline
+25-30/04 & Model calibration                                                             \\ \hline
+2-8/05   & Model simulation via MATLAB                                                   \\ \hline
+9-15/05  & Model validation using experimental data                                      \\ \hline
+16-22/05 & Optimal pathing and multipleobjetive opimization of the model                 \\ \hline
+\end{tabular}
+\label{Gantt chart}
+\end{table}
+
+
+
+
+\newpage
+\bibliographystyle{apalike}
+\bibliography{referencias}
+\nocite{*}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
