@@ -63,11 +63,17 @@ Results=MEIGO(problem,opts,'eSS',texp,yexp);
 x  = Results.xbest;
 X1 = [63 0.853 0.15 0 0 0.5 0.075];
 OPTIONS = odeset('RelTol',1e-6,'AbsTol',1e-7);
-[tout,yout]     = ode23(@model_ess,texp,X1,[],x);
+[tout,yout]     = ode23(@model_ess,[0 45.5],X1,[],x);
 
 figure
 plot(tout,yout)
+grid on
+xlabel('Time (h)')
 hold on
 plot(texp,yexp,'o')
+legend('Glucose','Nitrogen','Functional biomass','Lipid biomass','Citric acid','Volume'... 
+    ,'qn','Experimental glucose','Experimental functional biomass')
+
+
 
 
