@@ -30,30 +30,32 @@ if max(max(last_results.Ms)) >= 7
        
 %Problem-specific constraints (solid-substrate fermentation):
 
-% [th1 th3 th4 th7 th10 th16 th17]
+% %[th2 th3 th4 th5 th12 th16 th17]
+% [pilipmax picitmax Yxs ks2 k2 rhonmax Q0]
+
 % ds = Sin*(fsin/V)-((mu/Yxs)+(pilip/Ylips)+(picit/Ycits))*Xf-(S/V)*Fin;
-elseif it.new(1) + it.new(7) + it.new(4) + it.new(3) == 4
+elseif it.new(1) + it.new(2) + it.new(3) + it.new(4) + it.new(5) + it.new(7) == 6
     answer = false;                                        
                                                            
 %dn = Nin*(fnin/V)-rhon*Xf-(N/V)*Fin;    
-elseif it.new(6) + it.new(5) == 2 
+elseif it.new(6) == 1
     answer = false;                                        
 
 %dxf = mu*Xf-(Xf/V)*Fin;
-elseif it.new(1) + it.new(7) + it.new(4) == 3
+elseif it.new(7) == 1
     answer = false;
 % %dxl = (pilip+gamma*mu)*Xf-(Xl/V)*Fin;
 % elseif it.new(1) + it.new(17) + it.new(7) == 3
 %     answer = false;
 
 %dcit = picit*Xf-(CIT/V)*Fin;
-elseif it.new(2)  == 1
+elseif it.new(2) + it.new(5) == 1
     answer = false;
 %dqn = rhon-mu*qn;
-elseif it.new(6) + it.new(5) + it.new(1) + it.new(7) + it.new(4) == 5
+elseif it.new(6) + it.new(7) == 2
     answer = false;
-% [th1 th3 th4 th7 th10 th16 th17]
 
+% [pilipmax picitmax Yxs ks2 k2 rhonmax Q0]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %DO NOT MODIFY THIS SECTION
 else

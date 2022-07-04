@@ -17,10 +17,8 @@ t0          = texp(1);
 tf          = texp(length(texp));
 [tmod,xmod] = solve_ODE(k,[t0 tf]);
 xmod(:,2) = [];
-xmod(:,3) = [];
-xmod(:,3) = [];
-xmod(:,3) = [];
-xmod(:,3) = [];
+xmod(:,6) = [];
+xmod(:,5) = [];
 ymod=xmod;
 yexp        = ydata;
 

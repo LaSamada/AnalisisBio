@@ -62,7 +62,7 @@ syms U real
 
 %Once symbolic parameters and model states are defined, we build arrays to vectorize parameters and model states.
 statesSym=[x1 x2 x3 x4 x5 x6 x7]';
-thetaSym=[th2 th3 th4 th8 th11 th16 th17]'; %NOTE: DO NOT ADD FIXED PARAMETERS IN THETASYM!
+thetaSym=[th2 th3 th4 th5 th12 th16 th17]'; %NOTE: DO NOT ADD FIXED PARAMETERS IN THETASYM!
 %         mu0 betaG0 betaF0 Kn0 Kg0 Kf0 Kig0 Kie0 Kd0 Yxn  Yxg  Yxf  Yeg  Yef
 
 %Define the amount of model states and parameters
@@ -83,14 +83,14 @@ thetaNom = [  %0.755                      %1) mu0
               0.039                     %2) betaG0
               0.314                     %3) betaF0
               0.519                      %4) Kn0
-              %0.272                      %5) Kg0
+              0.272                      %5) Kg0
               %0.89                      %6) Kf0
               %1.116                      %7) Kig0
-              1.482                        %8) Kie0
+              %1.482                        %8) Kie0
               %12.22                   %9) Kd0
               %23.08                     %10) Yxn
-              9.75                      %11) Yxg
-              %37.63                      %12) Yxf
+              %9.75                      %11) Yxg
+              37.63                      %12) Yxf
               %83.64                      %13) Yeg
               %44.7
               %40.11
@@ -107,13 +107,17 @@ th18 = 0.047;
 th10 = 23.08;
 th7 = 1.116;
 th15 = 40.11;
-th9 = 12.22;
-th13 = 83.64;
-th5 = 0.272;
-th6 = 0.89;
-th1 = 0.755;
-th12 = 37.63;
 th14 = 44.7;
+th9 = 12.22;
+th8 = 1.482;
+th1 = 0.755;
+th13 = 83.64;
+th6 = 0.89;
+th11 = 9.75;
+% th5 = 0.272;
+% th6 = 0.89;
+% th1 = 0.755;
+% th12 = 37.63;
 % th12 = 37.63;
 % th15 = 40.11;
 % th16 = 0.716;
