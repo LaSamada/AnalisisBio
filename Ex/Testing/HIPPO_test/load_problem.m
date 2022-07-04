@@ -21,7 +21,7 @@
 function [kL,k0,kU,opts_SSm,texp,ydata,x0,solver_ODE,opts_ODE,T,U] =...
     load_problem
 
-%[th2 th3 th4 th5 th12 th16 th17]
+%[th2 th3 th4 th8 th11 th16 th17]
 
 %p = [0.755 0.039 0.314 0.519 0.272 0.89 1.116 1.482 12.22 23.08 ...
 %    9.75 37.63 83.64 44.7 40.11 0.716 0.045 0.047];
@@ -29,8 +29,8 @@ function [kL,k0,kU,opts_SSm,texp,ydata,x0,solver_ODE,opts_ODE,T,U] =...
 %Lower, initial and upper values for each parameter in SSm:%
 %  P = [ p1      p2      p3    p4    p5   p6   p7   p8    p9    p10   p11   p12   p13    p14    p15   p16   p17   p18]
 kL   = [   1e-3     1e-3    1e-3                1e-3             1           1e-3       1e-3   ];
-k0   = [ 0.039    0.314    0.519   0.272    37.63    0.716  0.045 ];
-kU   = [   1         1        3      3            70          2      1      ] ;
+k0   = [ 0.039    0.314    0.519   1.482    9.75    0.716  0.045 ];
+kU   = [   1         1        3      3            20          2      1      ] ;
 
 %SSm options:
 opts_SSm.maxeval      = 10000;

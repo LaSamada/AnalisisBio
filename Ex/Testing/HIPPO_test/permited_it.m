@@ -49,7 +49,7 @@ elseif it.new(7) == 1
 %     answer = false;
 
 %dcit = picit*Xf-(CIT/V)*Fin;
-elseif it.new(2) + it.new(5) == 1
+elseif it.new(2) == 1
     answer = false;
 %dqn = rhon-mu*qn;
 elseif it.new(6) + it.new(7) == 2

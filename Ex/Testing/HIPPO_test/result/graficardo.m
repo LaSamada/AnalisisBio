@@ -7,7 +7,7 @@ x01 = [60 1 0.45 0.05 0 0.5 0.075];
 
 x0 = [98.34 0.885 0.47 0.028 0 4.02 0.075]; % datos batch sebastian kinda
 
-data  = load('datos_agosin.txt'); %edit here
+data  = load('datos.txt'); %edit here
 [~,n] = size(data); 
 texp  = data(:,1)';
 ydata = data(:,2:n);
@@ -17,7 +17,7 @@ ydata = data(:,2:n);
 % texp  = data(:,1)';
 % ydata = data(:,2:n);
 
-[t3,y3] = ode23s(@sys_hippo,[0 45.5],x01);
+[t3,y3] = ode23s(@sys_hippo,[0 35],x0);
 
 
 plot(t3,y3)

@@ -30,6 +30,8 @@ V = x(6);
 qn = x(7);
 
 
+%[th2 th3 th4 th8 th11 th16 th17]
+
 %[th2 th3 th4 th5 th12 th16 th17]
 
 %p = [0.755 0.039 0.314 0.519 0.272 0.89 1.116 1.482 12.22 23.08 ...
@@ -37,9 +39,9 @@ qn = x(7);
 
 
 %Model parameters
-Yxs =p(3) ; Ylips = p(4); Ycits = 0.89; 
-gamma = 0.06; mumax = 0.755; rhonmax =p(6) ; Q0 =p(7) ; Ks1 = 1.116; kl1 = 83.64 ; Kn = 23.08 ; pilipmax = p(1); Ks2 =  1.482; kl2 = 44.7 ;
-alfa = 0.36; k2 = 9.75 ; qncrit = 0.047; picitmax = p(2); Ks3 = 12.22 ; kl3 = 40.11 ; k3 = p(5);
+Yxs =p(3) ; Ylips = 1.482 ; Ycits = 0.89; 
+gamma = 0.06; mumax = 0.755; rhonmax =p(6) ; Q0 =p(7) ; Ks1 = 1.116; kl1 = 83.64 ; Kn = 23.08 ; pilipmax = p(1); Ks2 =  p(4); kl2 = 44.7 ;
+alfa = 0.36; k2 = p(5) ; qncrit = 0.047; picitmax = p(2); Ks3 = 12.22 ; kl3 = 40.11 ; k3 = 37.63;
 
 Sin =  0; fsin = 0 ;  Nin = 0 ; fnin = 0 ; Fsample = 0;
 
